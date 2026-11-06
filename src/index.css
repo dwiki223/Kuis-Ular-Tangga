@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6, .font-display {
+    font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+@keyframes rollDice {
+  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(0.9); }
+  25% { transform: rotateX(360deg) rotateY(180deg) rotateZ(90deg) scale(1.1); }
+  50% { transform: rotateX(720deg) rotateY(540deg) rotateZ(270deg) scale(1.05); }
+  75% { transform: rotateX(900deg) rotateY(720deg) rotateZ(360deg) scale(1.1); }
+  100% { transform: rotateX(1080deg) rotateY(1080deg) rotateZ(360deg) scale(1); }
+}
+
+.animate-roll {
+  animation: rollDice 0.7s cubic-bezier(0.2, 0.8, 0.3, 1) infinite;
+}
+
+/* Custom scrollbar for game panels */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.8);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 1);
+}

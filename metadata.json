@@ -1,0 +1,6 @@
+{
+  "name": "Papan Juara: Iklan, Slogan & Poster SMP Kelas 8",
+  "description": "Permainan papan virtual multiplayer edukatif hingga 6 pemain untuk materi Teks Iklan, Slogan, dan Poster Bahasa Indonesia SMP Kelas 8 dengan kuis interaktif, dadu virtual, dan evaluasi hasil belajar.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
