@@ -86,10 +86,10 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     // START Tile (Petak 1)
     if (tile.type === 'START') {
       return {
-        bg: 'bg-gradient-to-br from-teal-900/90 via-emerald-950 to-slate-950 border-teal-400/80 shadow-lg shadow-teal-500/20',
-        badge: 'bg-teal-400 text-slate-950 font-black',
-        accentBar: 'bg-teal-400',
-        icon: <Flag className="w-3.5 h-3.5" />,
+        bg: 'bg-gradient-to-br from-emerald-100 via-teal-50 to-emerald-200 border-2 border-emerald-500 shadow-md text-emerald-950',
+        badge: 'bg-emerald-600 text-white font-black',
+        accentBar: 'bg-emerald-500',
+        icon: <Flag className="w-3.5 h-3.5 text-white" />,
         label: 'MULAI'
       };
     }
@@ -97,10 +97,10 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     // FINISH Tile (Petak 30)
     if (tile.type === 'FINISH') {
       return {
-        bg: 'bg-gradient-to-br from-amber-600 via-amber-800 to-yellow-950 border-amber-300 text-amber-100 shadow-2xl shadow-amber-500/40 ring-2 ring-amber-400/80',
-        badge: 'bg-gradient-to-r from-yellow-300 via-amber-300 to-orange-400 text-slate-950 font-black',
-        accentBar: 'bg-amber-300',
-        icon: <Trophy className="w-3.5 h-3.5" />,
+        bg: 'bg-gradient-to-br from-yellow-200 via-amber-300 to-orange-200 border-2 border-amber-500 text-amber-950 shadow-xl ring-2 ring-amber-400',
+        badge: 'bg-gradient-to-r from-yellow-400 via-amber-400 to-orange-400 text-slate-950 font-black',
+        accentBar: 'bg-amber-400',
+        icon: <Trophy className="w-3.5 h-3.5 text-slate-950" />,
         label: 'FINIS 🏆'
       };
     }
@@ -108,9 +108,9 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     // SNAKE HEAD TILE
     if (tile.type === 'SNAKE' || tile.snakeTo !== undefined) {
       return {
-        bg: 'bg-gradient-to-br from-red-950/90 via-slate-950 to-rose-950/80 border-red-500/70 shadow-md shadow-red-900/30',
-        badge: 'bg-red-600 text-white font-bold',
-        accentBar: 'bg-red-500',
+        bg: 'bg-gradient-to-br from-rose-100 via-red-50 to-rose-200 border-2 border-rose-400 shadow-md text-rose-950',
+        badge: 'bg-rose-600 text-white font-bold',
+        accentBar: 'bg-rose-500',
         icon: <span className="text-xs">🐍</span>,
         label: 'Awas Ular'
       };
@@ -119,10 +119,10 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     // LADDER FOOT TILE
     if (tile.type === 'LADDER' || tile.ladderTo !== undefined) {
       return {
-        bg: 'bg-gradient-to-br from-emerald-950/90 via-slate-950 to-teal-950/80 border-emerald-500/70 shadow-md shadow-emerald-900/30',
-        badge: 'bg-emerald-500 text-slate-950 font-bold',
-        accentBar: 'bg-emerald-400',
-        icon: <ArrowUpRight className="w-3.5 h-3.5" />,
+        bg: 'bg-gradient-to-br from-emerald-100 via-lime-50 to-teal-100 border-2 border-emerald-500 shadow-md text-emerald-950',
+        badge: 'bg-emerald-600 text-white font-bold',
+        accentBar: 'bg-emerald-500',
+        icon: <ArrowUpRight className="w-3.5 h-3.5 text-white" />,
         label: 'Naik Tangga'
       };
     }
@@ -130,65 +130,65 @@ export const GameBoard: React.FC<GameBoardProps> = ({
     switch (tile.type) {
       case 'IKLAN':
         return {
-          bg: 'bg-gradient-to-br from-sky-950/80 to-slate-950 border-sky-600/60 shadow-sm',
-          badge: 'bg-sky-500 text-slate-950',
-          accentBar: 'bg-sky-400',
-          icon: <Megaphone className="w-3.5 h-3.5" />,
+          bg: 'bg-gradient-to-br from-sky-100 via-blue-50 to-cyan-100 border-2 border-sky-400 shadow-sm text-sky-950',
+          badge: 'bg-sky-600 text-white font-bold',
+          accentBar: 'bg-sky-500',
+          icon: <Megaphone className="w-3.5 h-3.5 text-white" />,
           label: 'Iklan'
         };
       case 'SLOGAN':
         return {
-          bg: 'bg-gradient-to-br from-teal-950/80 to-slate-950 border-teal-600/60 shadow-sm',
-          badge: 'bg-teal-500 text-slate-950',
-          accentBar: 'bg-teal-400',
-          icon: <Sparkles className="w-3.5 h-3.5" />,
+          bg: 'bg-gradient-to-br from-teal-100 via-emerald-50 to-cyan-100 border-2 border-teal-400 shadow-sm text-teal-950',
+          badge: 'bg-teal-600 text-white font-bold',
+          accentBar: 'bg-teal-500',
+          icon: <Sparkles className="w-3.5 h-3.5 text-white" />,
           label: 'Slogan'
         };
       case 'POSTER':
         return {
-          bg: 'bg-gradient-to-br from-orange-950/80 to-slate-950 border-orange-600/60 shadow-sm',
-          badge: 'bg-orange-500 text-slate-950',
-          accentBar: 'bg-orange-400',
-          icon: <Palette className="w-3.5 h-3.5" />,
+          bg: 'bg-gradient-to-br from-amber-100 via-orange-50 to-amber-200 border-2 border-orange-400 shadow-sm text-orange-950',
+          badge: 'bg-orange-500 text-white font-bold',
+          accentBar: 'bg-orange-500',
+          icon: <Palette className="w-3.5 h-3.5 text-white" />,
           label: 'Poster'
         };
       case 'FAKTA_OPINI':
         return {
-          bg: 'bg-gradient-to-br from-violet-950/80 to-slate-950 border-violet-600/60 shadow-sm',
-          badge: 'bg-violet-500 text-white',
-          accentBar: 'bg-violet-400',
-          icon: <Search className="w-3.5 h-3.5" />,
+          bg: 'bg-gradient-to-br from-purple-100 via-violet-50 to-fuchsia-100 border-2 border-purple-400 shadow-sm text-purple-950',
+          badge: 'bg-purple-600 text-white font-bold',
+          accentBar: 'bg-purple-500',
+          icon: <Search className="w-3.5 h-3.5 text-white" />,
           label: 'Fakta/Opini'
         };
       case 'VISUAL_CASE':
         return {
-          bg: 'bg-gradient-to-br from-pink-950/80 to-slate-950 border-pink-600/60 shadow-sm',
-          badge: 'bg-pink-500 text-white',
-          accentBar: 'bg-pink-400',
-          icon: <ImageIcon className="w-3.5 h-3.5" />,
+          bg: 'bg-gradient-to-br from-pink-100 via-rose-50 to-pink-200 border-2 border-pink-400 shadow-sm text-pink-950',
+          badge: 'bg-pink-600 text-white font-bold',
+          accentBar: 'bg-pink-500',
+          icon: <ImageIcon className="w-3.5 h-3.5 text-white" />,
           label: 'Studi Kasus'
         };
       case 'CHANCE':
         return {
-          bg: 'bg-gradient-to-br from-amber-950/80 to-slate-950 border-amber-500/60 shadow-sm',
-          badge: 'bg-amber-400 text-slate-950',
-          accentBar: 'bg-amber-400',
-          icon: <HelpCircle className="w-3.5 h-3.5" />,
+          bg: 'bg-gradient-to-br from-yellow-100 via-amber-50 to-yellow-200 border-2 border-yellow-500 shadow-sm text-amber-950',
+          badge: 'bg-amber-500 text-slate-950 font-bold',
+          accentBar: 'bg-yellow-400',
+          icon: <HelpCircle className="w-3.5 h-3.5 text-slate-950" />,
           label: 'Peluang'
         };
       case 'DUEL':
         return {
-          bg: 'bg-gradient-to-br from-rose-950/80 to-slate-950 border-rose-600/60 shadow-sm',
-          badge: 'bg-rose-500 text-white',
-          accentBar: 'bg-rose-400',
-          icon: <Zap className="w-3.5 h-3.5" />,
+          bg: 'bg-gradient-to-br from-rose-100 via-red-50 to-rose-200 border-2 border-rose-500 shadow-sm text-rose-950',
+          badge: 'bg-rose-600 text-white font-bold',
+          accentBar: 'bg-rose-500',
+          icon: <Zap className="w-3.5 h-3.5 text-white" />,
           label: 'Duel Cepat'
         };
       default:
         return {
-          bg: 'bg-slate-900 border-slate-700',
-          badge: 'bg-slate-700 text-white',
-          accentBar: 'bg-slate-500',
+          bg: 'bg-slate-50 border-2 border-slate-300 text-slate-900',
+          badge: 'bg-slate-600 text-white',
+          accentBar: 'bg-slate-400',
           icon: null,
           label: 'Petak'
         };
@@ -217,36 +217,36 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   };
 
   return (
-    <div className="w-full bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-4 border-amber-900/60 rounded-3xl p-3 sm:p-6 shadow-2xl relative overflow-hidden ring-1 ring-amber-500/20">
+    <div className="w-full bg-gradient-to-b from-amber-100 via-amber-50 to-orange-100 border-4 border-amber-400 rounded-3xl p-3 sm:p-6 shadow-2xl relative overflow-hidden ring-4 ring-amber-300/50">
       {/* Decorative Wood-Trim Board Edge & Brass Corner Studs */}
-      <div className="absolute top-2 left-2 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 shadow border border-amber-200 pointer-events-none" />
-      <div className="absolute top-2 right-2 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 shadow border border-amber-200 pointer-events-none" />
-      <div className="absolute bottom-2 left-2 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 shadow border border-amber-200 pointer-events-none" />
-      <div className="absolute bottom-2 right-2 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 shadow border border-amber-200 pointer-events-none" />
+      <div className="absolute top-2 left-2 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-amber-400 to-amber-600 shadow-md border border-yellow-200 pointer-events-none" />
+      <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-amber-400 to-amber-600 shadow-md border border-yellow-200 pointer-events-none" />
+      <div className="absolute bottom-2 left-2 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-amber-400 to-amber-600 shadow-md border border-yellow-200 pointer-events-none" />
+      <div className="absolute bottom-2 right-2 w-4 h-4 rounded-full bg-gradient-to-br from-yellow-300 via-amber-400 to-amber-600 shadow-md border border-yellow-200 pointer-events-none" />
 
       {/* Deluxe Board Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-amber-500/20 relative z-20">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-amber-300/80 relative z-20">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/30">
-            <Compass className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-amber-400 via-orange-400 to-rose-400 flex items-center justify-center text-slate-950 font-black shadow-md">
+            <Compass className="w-5 h-5 text-slate-950" />
           </div>
           <div>
-            <h2 className="font-display font-black text-base sm:text-xl text-white tracking-tight flex items-center gap-2">
+            <h2 className="font-display font-black text-base sm:text-xl text-slate-900 tracking-tight flex items-center gap-2">
               <span>Arena Ular Tangga Bahasa Indonesia</span>
-              <span className="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 shadow-sm">
+              <span className="hidden sm:inline-block text-[10px] font-black px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 shadow-sm border border-amber-500">
                 EDISI DELUXE SMP KELAS 8
               </span>
             </h2>
-            <div className="flex items-center gap-3 text-xs text-slate-400 mt-0.5">
-              <span className="text-emerald-400 font-semibold flex items-center gap-1">
+            <div className="flex items-center gap-3 text-xs mt-0.5 font-medium">
+              <span className="text-emerald-700 font-bold flex items-center gap-1">
                 <span>🪜 4 Tangga Prestasi</span>
               </span>
-              <span>·</span>
-              <span className="text-rose-400 font-semibold flex items-center gap-1">
+              <span className="text-amber-400 font-black">·</span>
+              <span className="text-rose-600 font-bold flex items-center gap-1">
                 <span>🐍 4 Ular Peluncur</span>
               </span>
-              <span>·</span>
-              <span className="text-amber-300 font-semibold">
+              <span className="text-amber-400 font-black">·</span>
+              <span className="text-amber-800 font-extrabold">
                 🏁 Menuju Puncak Petak 30
               </span>
             </div>
@@ -260,8 +260,8 @@ export const GameBoard: React.FC<GameBoardProps> = ({
             onClick={() => setShowOverlays(!showOverlays)}
             className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm ${
               showOverlays
-                ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-amber-500/20 hover:bg-amber-400'
-                : 'bg-slate-900 border-slate-700 text-slate-400 hover:text-white'
+                ? 'bg-amber-400 text-slate-950 border-amber-500 shadow-amber-400/30 hover:bg-amber-300'
+                : 'bg-white border-amber-200 text-slate-600 hover:text-slate-900'
             }`}
           >
             {showOverlays ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
@@ -271,7 +271,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
       </div>
 
       {/* Main Board Arena (Grid + SVG Overlay) */}
-      <div className="relative w-full rounded-2xl overflow-hidden border border-slate-800 bg-slate-950/90 shadow-2xl p-2 sm:p-3">
+      <div className="relative w-full rounded-2xl overflow-hidden border-2 border-amber-300/80 bg-white shadow-xl p-2 sm:p-3">
         {/* SVG Graphic Overlay: Realistic 3D Ladders and Curving Snakes */}
         {showOverlays && (
           <svg
@@ -325,7 +325,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
               {/* Drop Shadow filter */}
               <filter id="boardShadow" x="-30%" y="-30%" width="160%" height="160%">
-                <feDropShadow dx="3" dy="5" stdDeviation="4" floodColor="#000" floodOpacity="0.75" />
+                <feDropShadow dx="2" dy="4" stdDeviation="3" floodColor="#000" floodOpacity="0.25" />
               </filter>
             </defs>
 
@@ -576,16 +576,16 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
                       {/* Header Row: Circular Coin Number & Badge & Direction Flow */}
                       <div className="flex items-center justify-between gap-1 relative z-10">
-                        {/* Deluxe Coin Number Badge */}
-                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-700 shadow-inner flex items-center justify-center">
-                          <span className="font-display font-black text-xs sm:text-sm text-amber-300 drop-shadow">
+                        {/* Deluxe Bright Gold Coin Number Badge */}
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gradient-to-br from-yellow-300 via-amber-300 to-amber-400 border border-amber-500 shadow-sm flex items-center justify-center">
+                          <span className="font-display font-black text-xs sm:text-sm text-slate-950">
                             {tile.index}
                           </span>
                         </div>
 
                         {/* Direction Arrow */}
                         {dirArrow && (
-                          <span className="text-[10px] font-mono font-extrabold text-slate-400/70 group-hover:text-amber-400 transition-colors">
+                          <span className="text-[10px] font-mono font-black text-amber-800/80 group-hover:text-amber-950 transition-colors">
                             {dirArrow}
                           </span>
                         )}
@@ -599,43 +599,43 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 
                       {/* Middle: Title & Action Banners */}
                       <div className="my-1 relative z-10">
-                        <p className="text-[11px] sm:text-xs font-bold leading-snug line-clamp-2 text-white drop-shadow-sm">
+                        <p className="text-[11px] sm:text-xs font-black leading-snug line-clamp-2 text-slate-900">
                           {tile.title}
                         </p>
 
                         {/* Tangga Naik Indicator Badge */}
                         {ladderHere && (
-                          <div className="text-[9px] font-extrabold text-emerald-300 flex items-center gap-1 mt-1 bg-emerald-950/90 px-1.5 py-0.5 rounded-md border border-emerald-500/70 shadow-sm animate-pulse">
-                            <ArrowUpRight className="w-3 h-3 text-emerald-400" />
+                          <div className="text-[9px] font-black text-white flex items-center gap-1 mt-1 bg-emerald-600 px-1.5 py-0.5 rounded-md border border-emerald-500 shadow-sm animate-pulse">
+                            <ArrowUpRight className="w-3 h-3 text-white" />
                             <span>Naik #{ladderHere.to}</span>
                           </div>
                         )}
 
                         {/* Puncak Tangga */}
                         {ladderTopHere && (
-                          <div className="text-[8px] font-bold text-emerald-400 flex items-center gap-0.5 mt-0.5 opacity-90">
+                          <div className="text-[8px] font-bold text-emerald-800 flex items-center gap-0.5 mt-0.5">
                             <span>🪜 Puncak Tangga</span>
                           </div>
                         )}
 
                         {/* Kepala Ular Indicator Badge */}
                         {snakeHere && (
-                          <div className="text-[9px] font-extrabold text-red-300 flex items-center gap-1 mt-1 bg-red-950/90 px-1.5 py-0.5 rounded-md border border-red-500/70 shadow-sm animate-pulse">
-                            <ArrowDownRight className="w-3 h-3 text-red-400" />
+                          <div className="text-[9px] font-black text-white flex items-center gap-1 mt-1 bg-rose-600 px-1.5 py-0.5 rounded-md border border-rose-500 shadow-sm animate-pulse">
+                            <ArrowDownRight className="w-3 h-3 text-white" />
                             <span>Ular! Meluncur #{snakeHere.to}</span>
                           </div>
                         )}
 
                         {/* Ekor Ular */}
                         {snakeTailHere && (
-                          <div className="text-[8px] font-bold text-red-400 flex items-center gap-0.5 mt-0.5 opacity-90">
+                          <div className="text-[8px] font-bold text-rose-800 flex items-center gap-0.5 mt-0.5">
                             <span>🐾 Ekor Ular</span>
                           </div>
                         )}
                       </div>
 
                       {/* Bottom: 3D Pawns Sitting on this Tile */}
-                      <div className="min-h-[32px] sm:min-h-[38px] flex items-end justify-center gap-1.5 flex-wrap pt-1 border-t border-slate-800/80 relative z-20">
+                      <div className="min-h-[32px] sm:min-h-[38px] flex items-end justify-center gap-1.5 flex-wrap pt-1 border-t border-slate-300/70 relative z-20">
                         {playersOnTile.length === 0 ? (
                           <div className="h-4" />
                         ) : (

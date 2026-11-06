@@ -350,7 +350,7 @@ export default function App() {
   const activePlayer = players[activePlayerIndex] || players[0];
 
   return (
-    <div className={`min-h-screen bg-slate-950 text-slate-100 flex flex-col ${
+    <div className={`min-h-screen bg-gradient-to-b from-amber-50/80 via-orange-50/40 to-amber-50/80 text-slate-800 flex flex-col ${
       settings.presentationMode ? 'text-base lg:text-lg' : 'text-sm'
     }`}>
       {/* 3-Zone Clean Header */}
@@ -375,15 +375,15 @@ export default function App() {
         ) : (
           <div className="space-y-6">
             {/* Round & Active Player HUD Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 rounded-xl bg-slate-900/70 border border-slate-800 text-xs">
+            <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 rounded-2xl bg-white/95 border-2 border-amber-300 shadow-md text-xs text-slate-800">
               <div className="flex items-center gap-3">
-                <span className="font-bold text-amber-400">Putaran #{roundNumber}</span>
-                <span className="text-slate-600">|</span>
-                <span className="text-slate-300">
-                  Total Pemain: <strong>{players.length} Orang</strong>
+                <span className="font-black text-amber-700">Putaran #{roundNumber}</span>
+                <span className="text-amber-300 font-black">|</span>
+                <span className="text-slate-700 font-medium">
+                  Total Pemain: <strong className="text-slate-900 font-bold">{players.length} Orang</strong>
                 </span>
-                <span className="text-slate-600 hidden sm:inline">|</span>
-                <span className="text-slate-400 hidden sm:inline">
+                <span className="text-amber-300 font-black hidden sm:inline">|</span>
+                <span className="text-slate-600 hidden sm:inline font-medium">
                   Materi: Teks Iklan, Slogan, dan Poster
                 </span>
               </div>
@@ -392,9 +392,9 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setCurrentTab('MODULE')}
-                  className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium flex items-center gap-1 transition-colors"
+                  className="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold border border-amber-300 flex items-center gap-1.5 transition-colors shadow-sm"
                 >
-                  <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+                  <BookOpen className="w-3.5 h-3.5 text-amber-700" />
                   <span>Lihat Modul Belajar</span>
                 </button>
               </div>
@@ -431,9 +431,9 @@ export default function App() {
                 />
 
                 {/* Live Play-by-Play Activity Feed */}
-                <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 shadow-xl">
-                  <div className="flex items-center gap-2 mb-3 pb-2 border-b border-slate-800 text-xs font-bold text-slate-300">
-                    <MessageSquare className="w-3.5 h-3.5 text-amber-400" />
+                <div className="bg-white/95 border-2 border-amber-300 rounded-2xl p-4 shadow-lg">
+                  <div className="flex items-center gap-2 mb-3 pb-2 border-b border-amber-200 text-xs font-black text-slate-900">
+                    <MessageSquare className="w-3.5 h-3.5 text-amber-600" />
                     <span>Catatan Perjalanan Papan</span>
                   </div>
 
@@ -441,10 +441,10 @@ export default function App() {
                     {gameLogs.map((log, index) => (
                       <div
                         key={index}
-                        className={`p-2 rounded-lg leading-relaxed ${
+                        className={`p-2.5 rounded-xl leading-relaxed ${
                           index === 0
-                            ? 'bg-amber-500/10 border border-amber-500/30 text-amber-200 font-medium'
-                            : 'bg-slate-900/40 text-slate-400'
+                            ? 'bg-amber-100/90 border border-amber-400 text-amber-950 font-bold shadow-sm'
+                            : 'bg-slate-50 border border-slate-200/80 text-slate-700'
                         }`}
                       >
                         {log}
@@ -524,37 +524,37 @@ export default function App() {
 
       {/* TILE DETAIL POPUP (When player clicks a tile to inspect it) */}
       {activeTileDetail && (
-        <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-sm w-full p-5 shadow-2xl relative animate-scale-in">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-              <span className="text-xs font-mono text-amber-400 font-bold">
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border-2 border-amber-300 rounded-3xl max-w-sm w-full p-5 shadow-2xl relative animate-scale-in text-slate-900">
+            <div className="flex items-center justify-between pb-2 border-b border-amber-200">
+              <span className="text-xs font-mono text-amber-700 font-black">
                 Petak #{activeTileDetail.index} · {activeTileDetail.type}
               </span>
               <button
                 type="button"
                 onClick={() => setActiveTileDetail(null)}
-                className="text-slate-400 hover:text-white text-xs px-2 py-1 rounded bg-slate-800"
+                className="text-slate-600 hover:text-slate-900 text-xs px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 font-bold"
               >
                 Tutup
               </button>
             </div>
             <div className="mt-3 space-y-2">
-              <h4 className="font-bold text-white text-base">
+              <h4 className="font-black text-slate-900 text-base">
                 {activeTileDetail.title}
               </h4>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-600 font-medium leading-relaxed">
                 {activeTileDetail.description}
               </p>
               {activeTileDetail.ladderTo !== undefined && (
-                <div className="p-2 rounded bg-lime-950/60 border border-lime-800 text-lime-300 text-xs flex items-center gap-1.5">
-                  <ArrowUpRight className="w-4 h-4" />
+                <div className="p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-950 text-xs flex items-center gap-1.5 font-bold">
+                  <ArrowUpRight className="w-4 h-4 text-emerald-600" />
                   <span>Jalur Tangga Pintas: Langsung melesat ke Petak #{activeTileDetail.ladderTo}!</span>
                 </div>
               )}
-              {activeTileDetail.trapTo !== undefined && (
-                <div className="p-2 rounded bg-red-950/60 border border-red-800 text-red-300 text-xs flex items-center gap-1.5">
-                  <ArrowDownRight className="w-4 h-4" />
-                  <span>Jebakan Typo: Terpeleset mundur ke Petak #{activeTileDetail.trapTo}.</span>
+              {(activeTileDetail.snakeTo !== undefined || activeTileDetail.trapTo !== undefined) && (
+                <div className="p-2.5 rounded-xl bg-rose-50 border border-rose-300 text-rose-950 text-xs flex items-center gap-1.5 font-bold">
+                  <ArrowDownRight className="w-4 h-4 text-rose-600" />
+                  <span>Ular / Jebakan: Terpeleset turun ke Petak #{activeTileDetail.snakeTo || activeTileDetail.trapTo}.</span>
                 </div>
               )}
             </div>
@@ -563,7 +563,7 @@ export default function App() {
       )}
 
       {/* Clean, quiet footer */}
-      <footer className="w-full border-t border-slate-900 py-4 px-6 text-center text-xs text-slate-500">
+      <footer className="w-full border-t border-amber-200/80 bg-white/50 py-4 px-6 text-center text-xs text-slate-500 font-medium">
         Media Pembelajaran Interaktif Bahasa Indonesia Kelas 8 SMP · Materi Teks Iklan, Slogan, dan Poster
       </footer>
     </div>

@@ -65,19 +65,19 @@ export const QuestionBankModal: React.FC<QuestionBankModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-700 rounded-3xl max-w-4xl w-full p-6 sm:p-8 shadow-2xl relative my-auto max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-white border-2 border-amber-300 rounded-3xl max-w-4xl w-full p-6 sm:p-8 shadow-2xl relative my-auto max-h-[90vh] flex flex-col text-slate-900">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 border-b border-slate-800 shrink-0">
+        <div className="flex items-center justify-between pb-4 border-b border-amber-200 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-400">
+            <div className="p-2.5 rounded-2xl bg-amber-100 text-amber-700 border border-amber-300 shadow-sm">
               <HelpCircle className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-display font-extrabold text-white">
+              <h2 className="text-lg sm:text-xl font-display font-black text-slate-900">
                 Bank Soal Kurikulum & Soal Kustom Guru
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 font-medium">
                 Total {questions.length} Soal Tersedia dalam Sesi Permainan Ini
               </p>
             </div>
@@ -87,7 +87,7 @@ export const QuestionBankModal: React.FC<QuestionBankModalProps> = ({
             <button
               type="button"
               onClick={() => setIsAdding(!isAdding)}
-              className="px-3.5 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs flex items-center gap-1.5 hover:bg-amber-400 transition-colors"
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 text-slate-950 font-black text-xs flex items-center gap-1.5 hover:from-amber-300 hover:to-orange-300 transition-all shadow-sm border border-amber-400"
             >
               <Plus className="w-4 h-4" />
               <span>{isAdding ? 'Lihat Daftar Soal' : 'Tambah Soal Baru'}</span>
@@ -95,7 +95,7 @@ export const QuestionBankModal: React.FC<QuestionBankModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white"
+              className="p-2 rounded-xl bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200 transition-colors border border-slate-200"
             >
               <X className="w-5 h-5" />
             </button>
@@ -105,19 +105,19 @@ export const QuestionBankModal: React.FC<QuestionBankModalProps> = ({
         {/* Add Question Form View */}
         {isAdding ? (
           <form onSubmit={handleSubmitNew} className="flex-1 overflow-y-auto py-4 space-y-4 text-xs pr-2">
-            <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-4">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Plus className="w-4 h-4 text-amber-400" />
+            <div className="bg-amber-50/60 p-4 rounded-2xl border-2 border-amber-200 space-y-4 shadow-sm">
+              <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                <Plus className="w-4 h-4 text-amber-600" />
                 <span>Formulir Buat Soal Pembelajaran Baru</span>
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-400 block mb-1 font-semibold">Kategori Materi:</label>
+                  <label className="text-slate-700 block mb-1 font-bold">Kategori Materi:</label>
                   <select
                     value={newCat}
                     onChange={(e) => setNewCat(e.target.value as CategoryType)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-slate-900 font-medium"
                   >
                     <option value="IKLAN">Teks Iklan</option>
                     <option value="SLOGAN">Teks Slogan</option>
@@ -128,11 +128,11 @@ export const QuestionBankModal: React.FC<QuestionBankModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="text-slate-400 block mb-1 font-semibold">Tingkat Kesulitan:</label>
+                  <label className="text-slate-700 block mb-1 font-bold">Tingkat Kesulitan:</label>
                   <select
                     value={newDiff}
                     onChange={(e) => setNewDiff(e.target.value as 'MUDAH' | 'SEDANG' | 'SULIT')}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"
+                    className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-slate-900 font-medium"
                   >
                     <option value="MUDAH">Mudah (100 Poin)</option>
                     <option value="SEDANG">Sedang (120 Poin)</option>
@@ -142,20 +142,20 @@ export const QuestionBankModal: React.FC<QuestionBankModalProps> = ({
               </div>
 
               <div>
-                <label className="text-slate-400 block mb-1 font-semibold">Pertanyaan Kuis:</label>
+                <label className="text-slate-700 block mb-1 font-bold">Pertanyaan Kuis:</label>
                 <textarea
                   rows={3}
                   value={newPrompt}
                   onChange={(e) => setNewPrompt(e.target.value)}
                   placeholder="Ketik pertanyaan kuis Bahasa Indonesia kelas 8..."
                   required
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-amber-400"
+                  className="w-full bg-white border border-slate-300 rounded-xl p-2.5 text-slate-900 focus:outline-none focus:border-amber-500 font-medium"
                 />
               </div>
 
               {/* 4 Options */}
               <div className="space-y-2">
-                <label className="text-slate-400 block font-semibold">Pilihan Jawaban (Pilih radio untuk jawaban benar):</label>
+                <label className="text-slate-700 block font-bold">Pilihan Jawaban (Pilih radio untuk jawaban benar):</label>
                 {[
                   { val: newOpt0, setVal: setNewOpt0, idx: 0, label: 'A' },
                   { val: newOpt1, setVal: setNewOpt1, idx: 1, label: 'B' },
@@ -171,38 +171,38 @@ export const QuestionBankModal: React.FC<QuestionBankModalProps> = ({
                       className="w-4 h-4 accent-amber-500"
                       title="Tandai sebagai jawaban benar"
                     />
-                    <span className="font-bold text-white w-4">{opt.label}.</span>
+                    <span className="font-black text-slate-900 w-4">{opt.label}.</span>
                     <input
                       type="text"
                       value={opt.val}
                       onChange={(e) => opt.setVal(e.target.value)}
                       placeholder={`Opsi ${opt.label}...`}
                       required
-                      className="flex-1 bg-slate-900 border border-slate-700 rounded-lg p-2 text-white"
+                      className="flex-1 bg-white border border-slate-300 rounded-xl p-2 text-slate-900 font-medium"
                     />
                   </div>
                 ))}
               </div>
 
               <div>
-                <label className="text-slate-400 block mb-1 font-semibold">Penjelasan Edukatif (Pembahasan):</label>
+                <label className="text-slate-700 block mb-1 font-bold">Penjelasan Edukatif (Pembahasan):</label>
                 <textarea
                   rows={2}
                   value={newExplanation}
                   onChange={(e) => setNewExplanation(e.target.value)}
                   placeholder="Mengapa jawaban ini benar? Jelaskan konsep/aturan bahasanya..."
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white"
+                  className="w-full bg-white border border-slate-300 rounded-xl p-2 text-slate-900 font-medium"
                 />
               </div>
 
               <div>
-                <label className="text-slate-400 block mb-1 font-semibold">Referensi KD / Kurikulum:</label>
+                <label className="text-slate-700 block mb-1 font-bold">Referensi KD / Kurikulum:</label>
                 <input
                   type="text"
                   value={newCurriculumRef}
                   onChange={(e) => setNewCurriculumRef(e.target.value)}
                   placeholder="Contoh: KD 3.3 / Kurikulum Merdeka Bab 2"
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white"
+                  className="w-full bg-white border border-slate-300 rounded-xl p-2 text-slate-900 font-medium"
                 />
               </div>
 
@@ -210,13 +210,13 @@ export const QuestionBankModal: React.FC<QuestionBankModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsAdding(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-800 text-slate-300"
+                  className="px-4 py-2 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 font-bold hover:bg-slate-200 transition-colors"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-amber-500 text-slate-950 font-bold hover:bg-amber-400 transition-colors"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-400 text-slate-950 font-black hover:from-amber-300 hover:to-orange-300 transition-all shadow-md border border-amber-400"
                 >
                   Simpan ke Bank Soal
                 </button>
@@ -234,7 +234,7 @@ export const QuestionBankModal: React.FC<QuestionBankModalProps> = ({
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Cari kata kunci soal..."
-                  className="w-full pl-9 pr-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                  className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-amber-400 shadow-sm"
                 />
               </div>
 
@@ -244,10 +244,10 @@ export const QuestionBankModal: React.FC<QuestionBankModalProps> = ({
                     key={cat}
                     type="button"
                     onClick={() => setFilterCategory(cat)}
-                    className={`px-3 py-1.5 rounded-lg font-medium whitespace-nowrap transition-colors ${
+                    className={`px-3 py-1.5 rounded-xl font-bold whitespace-nowrap transition-colors border ${
                       filterCategory === cat
-                        ? 'bg-amber-500 text-slate-950 font-bold'
-                        : 'bg-slate-950 border border-slate-800 text-slate-400 hover:text-white'
+                        ? 'bg-amber-400 text-slate-950 border-amber-500 shadow-sm font-black'
+                        : 'bg-white border-slate-200 text-slate-600 hover:border-amber-300 hover:text-slate-900'
                     }`}
                   >
                     {cat === 'ALL' ? 'Semua' : cat.replace('_', ' ')}
@@ -259,19 +259,19 @@ export const QuestionBankModal: React.FC<QuestionBankModalProps> = ({
             {/* Questions List */}
             <div className="space-y-3">
               {filteredQuestions.map((q, idx) => (
-                <div key={q.id} className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-2">
+                <div key={q.id} className="p-4 rounded-2xl bg-amber-50/60 border-2 border-amber-200 text-xs space-y-2 shadow-sm">
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-slate-500">#{idx + 1}</span>
-                      <span className="font-bold px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-amber-400">
+                      <span className="font-mono font-bold text-slate-500">#{idx + 1}</span>
+                      <span className="font-black px-2.5 py-0.5 rounded-lg bg-amber-100 border border-amber-300 text-amber-900">
                         {q.category.replace('_', ' ')}
                       </span>
-                      <span className="text-[11px] text-slate-400 font-medium">{q.difficulty}</span>
+                      <span className="text-[11px] text-slate-600 font-bold">{q.difficulty}</span>
                     </div>
-                    <span className="text-[11px] text-slate-500">{q.curriculumRef}</span>
+                    <span className="text-[11px] text-slate-500 font-medium">{q.curriculumRef}</span>
                   </div>
 
-                  <p className="font-bold text-white text-sm leading-relaxed">
+                  <p className="font-black text-slate-900 text-sm leading-relaxed">
                     {q.prompt}
                   </p>
 
@@ -281,21 +281,21 @@ export const QuestionBankModal: React.FC<QuestionBankModalProps> = ({
                       return (
                         <div
                           key={oIdx}
-                          className={`p-2 rounded-lg border text-xs flex items-center justify-between ${
+                          className={`p-2.5 rounded-xl border text-xs flex items-center justify-between ${
                             isCorrect
-                              ? 'bg-emerald-950/60 border-emerald-700 text-emerald-200 font-semibold'
-                              : 'bg-slate-900 border-slate-800 text-slate-400'
+                              ? 'bg-emerald-50 border-emerald-400 text-emerald-950 font-bold shadow-sm'
+                              : 'bg-white border-slate-200 text-slate-700'
                           }`}
                         >
-                          <span><strong>{String.fromCharCode(65 + oIdx)}.</strong> {opt}</span>
-                          {isCorrect && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />}
+                          <span><strong className="font-black">{String.fromCharCode(65 + oIdx)}.</strong> {opt}</span>
+                          {isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />}
                         </div>
                       );
                     })}
                   </div>
 
-                  <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800/80 text-[11px] text-slate-300">
-                    <strong className="text-amber-400">Pembahasan: </strong>{q.explanation}
+                  <div className="p-2.5 rounded-xl bg-amber-100/70 border border-amber-300 text-[11px] text-slate-800">
+                    <strong className="text-amber-800 font-black">Pembahasan: </strong>{q.explanation}
                   </div>
                 </div>
               ))}
