@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Player } from '../types/game';
+import { PlayerPawn } from './PlayerPawn';
 import { Dices, Sparkles, Bot, Shield, Flame } from 'lucide-react';
 
 interface DiceRollerProps {
@@ -87,13 +88,10 @@ export const DiceRoller: React.FC<DiceRollerProps> = ({
 
   return (
     <div className="w-full bg-slate-950/90 border border-slate-800 rounded-2xl p-4 sm:p-5 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
-      {/* Active Player Status Badge */}
-      <div className="flex items-center gap-3.5 w-full md:w-auto">
-        <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center font-display font-extrabold text-xl text-white shadow-lg ring-2 ring-white/20 shrink-0"
-          style={{ backgroundColor: activePlayer.avatar.color }}
-        >
-          {activePlayer.name.charAt(0).toUpperCase()}
+      {/* Active Player Status Badge with 3D Pawn Showcase */}
+      <div className="flex items-center gap-4 w-full md:w-auto">
+        <div className="p-1.5 rounded-2xl bg-slate-900 border border-slate-700/80 shadow-inner flex items-center justify-center shrink-0">
+          <PlayerPawn player={activePlayer} isActive={true} size="lg" />
         </div>
 
         <div className="flex flex-col min-w-0">

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AVATAR_OPTIONS } from '../data/questionsData';
 import { AvatarOption, Player, GameSettings } from '../types/game';
+import { PlayerPawn } from './PlayerPawn';
 import { Users, Bot, User, Play, Sparkles, Clock, Compass } from 'lucide-react';
 
 interface PlayerSetupProps {
@@ -147,19 +148,41 @@ export const PlayerSetup: React.FC<PlayerSetupProps> = ({ onStartGame, defaultSe
                     className="p-3.5 rounded-xl border border-slate-800 bg-slate-950/70 hover:border-slate-700 transition-colors flex flex-col gap-3"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <div
-                          className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white shadow-sm"
-                          style={{ backgroundColor: avatar.color }}
-                        >
-                          P{idx + 1}
+                      <div className="flex items-center gap-3">
+                        <div className="shrink-0">
+                          <PlayerPawn
+                            player={{
+                              id: idx + 1,
+                              name: draft.name.trim() || `P${idx + 1}`,
+                              avatar,
+                              isBot: draft.isBot,
+                              position: 1,
+                              score: 0,
+                              streak: 0,
+                              highestStreak: 0,
+                              hasShield: false,
+                              history: [],
+                              stats: {
+                                iklanCorrect: 0,
+                                iklanTotal: 0,
+                                sloganCorrect: 0,
+                                sloganTotal: 0,
+                                posterCorrect: 0,
+                                posterTotal: 0,
+                                faktaOpiniCorrect: 0,
+                                faktaOpiniTotal: 0,
+                              }
+                            }}
+                            isActive={false}
+                            size="sm"
+                          />
                         </div>
                         <input
                           type="text"
                           value={draft.name}
                           onChange={(e) => updateDraft(idx, 'name', e.target.value)}
                           placeholder={`Nama Pemain ${idx + 1}`}
-                          className="bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-xs font-semibold text-white focus:outline-none focus:border-amber-400 w-36 sm:w-40"
+                          className="bg-slate-900 border border-slate-700 rounded px-2.5 py-1 text-xs font-semibold text-white focus:outline-none focus:border-amber-400 w-32 sm:w-36"
                         />
                       </div>
 

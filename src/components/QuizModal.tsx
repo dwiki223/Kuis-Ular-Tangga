@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Player, Question } from '../types/game';
+import { PlayerPawn } from './PlayerPawn';
 import { playSound } from '../utils/audio';
 import { 
   CheckCircle2, XCircle, Clock, Award, BookOpen, 
@@ -118,15 +119,12 @@ export const QuizModal: React.FC<QuizModalProps> = ({
       <div className="bg-slate-900 border border-slate-700/80 rounded-2xl max-w-3xl w-full p-5 sm:p-7 shadow-2xl relative my-auto">
         {/* Top Header: Player & Category Information */}
         <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-800">
-          <div className="flex items-center gap-2.5">
-            <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs text-white"
-              style={{ backgroundColor: player.avatar.color }}
-            >
-              {player.name.charAt(0).toUpperCase()}
+          <div className="flex items-center gap-3">
+            <div className="shrink-0 flex items-center justify-center">
+              <PlayerPawn player={player} isActive={true} size="sm" />
             </div>
             <div>
-              <div className="text-xs text-slate-400">Giliran Menjawab</div>
+              <div className="text-[11px] font-semibold text-amber-400 uppercase tracking-wider">Giliran Menjawab</div>
               <div className="text-sm font-bold text-white flex items-center gap-1.5">
                 <span>{player.name}</span>
                 {player.hasShield && (

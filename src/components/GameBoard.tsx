@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { BOARD_TILES, LADDERS, SNAKES } from '../data/questionsData';
 import { BoardTile, Player, TileType } from '../types/game';
+import { PlayerPawn } from './PlayerPawn';
 import { 
   Megaphone, Sparkles, Palette, Search, Image as ImageIcon, 
   HelpCircle, Zap, ArrowUpRight, ArrowDownRight, Flag, Trophy,
-  Eye, EyeOff
+  Eye, EyeOff, Crown, Compass
 } from 'lucide-react';
 
 interface GameBoardProps {
@@ -13,7 +14,7 @@ interface GameBoardProps {
   onTileClick?: (tile: BoardTile) => void;
 }
 
-// Coordinate mapping for 30 tiles (6 cols x 5 rows, serpentine winding upwards)
+// 6 columns x 5 rows grid coordinates for Petak 1 to 30
 // Row 4 (Bottom): 1 -> 2 -> 3 -> 4 -> 5 -> 6
 // Row 3: 12 <- 11 <- 10 <- 9 <- 8 <- 7
 // Row 2: 13 -> 14 -> 15 -> 16 -> 17 -> 18
@@ -59,13 +60,17 @@ export const GameBoard: React.FC<GameBoardProps> = ({
 }) => {
   const [showOverlays, setShowOverlays] = useState<boolean>(true);
 
+  // Highest score player gets the crown
+  const highestScore = Math.max(...players.map(p => p.score), 0);
+  const leaderId = highestScore > 0 ? players.find(p => p.score === highestScore)?.id : null;
+
   // 5 rows rendered from top (Row 0) to bottom (Row 4)
   const rows = [
-    [25, 26, 27, 28, 29, 30], // Top row (FINIS at 30)
-    [24, 23, 22, 21, 20, 19], // Row 1 (Reverse)
-    [13, 14, 15, 16, 17, 18], // Row 2 (Forward)
-    [12, 11, 10, 9, 8, 7],    // Row 3 (Reverse)
-    [1, 2, 3, 4, 5, 6],       // Bottom row (START at 1)
+    [25, 26, 27, 28, 29, 30], // Row 0 (Topmost: 25 -> 30 FINIS)
+    [24, 23, 22, 21, 20, 19], // Row 1 (24 <- 19)
+    [13, 14, 15, 16, 17, 18], // Row 2 (13 -> 18)
+    [12, 11, 10, 9, 8, 7],    // Row 3 (12 <- 7)
+    [1, 2, 3, 4, 5, 6],       // Row 4 (Bottom: 1 START -> 6)
   ];
 
   // Helper for center coordinates in SVG space (0..600 x 0..500)
@@ -78,139 +83,196 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   };
 
   const getTileTheme = (tile: BoardTile) => {
-    // If it's a snake head
-    if (tile.type === 'SNAKE' || tile.snakeTo !== undefined) {
+    // START Tile (Petak 1)
+    if (tile.type === 'START') {
       return {
-        bg: 'bg-red-950/75 border-red-500/70 text-red-200',
-        badge: 'bg-red-600 text-white shadow-sm',
-        icon: <span className="text-xs">🐍</span>,
-        label: 'Ular'
+        bg: 'bg-gradient-to-br from-teal-900/90 via-emerald-950 to-slate-950 border-teal-400/80 shadow-lg shadow-teal-500/20',
+        badge: 'bg-teal-400 text-slate-950 font-black',
+        accentBar: 'bg-teal-400',
+        icon: <Flag className="w-3.5 h-3.5" />,
+        label: 'MULAI'
       };
     }
 
-    // If it's a ladder foot
+    // FINISH Tile (Petak 30)
+    if (tile.type === 'FINISH') {
+      return {
+        bg: 'bg-gradient-to-br from-amber-600 via-amber-800 to-yellow-950 border-amber-300 text-amber-100 shadow-2xl shadow-amber-500/40 ring-2 ring-amber-400/80',
+        badge: 'bg-gradient-to-r from-yellow-300 via-amber-300 to-orange-400 text-slate-950 font-black',
+        accentBar: 'bg-amber-300',
+        icon: <Trophy className="w-3.5 h-3.5" />,
+        label: 'FINIS 🏆'
+      };
+    }
+
+    // SNAKE HEAD TILE
+    if (tile.type === 'SNAKE' || tile.snakeTo !== undefined) {
+      return {
+        bg: 'bg-gradient-to-br from-red-950/90 via-slate-950 to-rose-950/80 border-red-500/70 shadow-md shadow-red-900/30',
+        badge: 'bg-red-600 text-white font-bold',
+        accentBar: 'bg-red-500',
+        icon: <span className="text-xs">🐍</span>,
+        label: 'Awas Ular'
+      };
+    }
+
+    // LADDER FOOT TILE
     if (tile.type === 'LADDER' || tile.ladderTo !== undefined) {
       return {
-        bg: 'bg-emerald-950/75 border-emerald-500/70 text-emerald-200',
-        badge: 'bg-emerald-500 text-slate-950 shadow-sm',
+        bg: 'bg-gradient-to-br from-emerald-950/90 via-slate-950 to-teal-950/80 border-emerald-500/70 shadow-md shadow-emerald-900/30',
+        badge: 'bg-emerald-500 text-slate-950 font-bold',
+        accentBar: 'bg-emerald-400',
         icon: <ArrowUpRight className="w-3.5 h-3.5" />,
-        label: 'Tangga'
+        label: 'Naik Tangga'
       };
     }
 
     switch (tile.type) {
-      case 'START':
-        return {
-          bg: 'bg-teal-950/90 border-teal-400 text-teal-200 ring-1 ring-teal-400/40',
-          badge: 'bg-teal-400 text-slate-950 font-bold',
-          icon: <Flag className="w-3.5 h-3.5" />,
-          label: 'START'
-        };
-      case 'FINISH':
-        return {
-          bg: 'bg-gradient-to-br from-amber-950 via-yellow-950 to-orange-950 border-amber-400 text-amber-200 ring-2 ring-amber-400/50 shadow-xl',
-          badge: 'bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 font-black',
-          icon: <Trophy className="w-3.5 h-3.5" />,
-          label: 'FINIS'
-        };
       case 'IKLAN':
         return {
-          bg: 'bg-sky-950/70 border-sky-600/50 text-sky-200',
+          bg: 'bg-gradient-to-br from-sky-950/80 to-slate-950 border-sky-600/60 shadow-sm',
           badge: 'bg-sky-500 text-slate-950',
+          accentBar: 'bg-sky-400',
           icon: <Megaphone className="w-3.5 h-3.5" />,
           label: 'Iklan'
         };
       case 'SLOGAN':
         return {
-          bg: 'bg-teal-950/70 border-teal-600/50 text-teal-200',
+          bg: 'bg-gradient-to-br from-teal-950/80 to-slate-950 border-teal-600/60 shadow-sm',
           badge: 'bg-teal-500 text-slate-950',
+          accentBar: 'bg-teal-400',
           icon: <Sparkles className="w-3.5 h-3.5" />,
           label: 'Slogan'
         };
       case 'POSTER':
         return {
-          bg: 'bg-orange-950/70 border-orange-600/50 text-orange-200',
+          bg: 'bg-gradient-to-br from-orange-950/80 to-slate-950 border-orange-600/60 shadow-sm',
           badge: 'bg-orange-500 text-slate-950',
+          accentBar: 'bg-orange-400',
           icon: <Palette className="w-3.5 h-3.5" />,
           label: 'Poster'
         };
       case 'FAKTA_OPINI':
         return {
-          bg: 'bg-violet-950/70 border-violet-600/50 text-violet-200',
+          bg: 'bg-gradient-to-br from-violet-950/80 to-slate-950 border-violet-600/60 shadow-sm',
           badge: 'bg-violet-500 text-white',
+          accentBar: 'bg-violet-400',
           icon: <Search className="w-3.5 h-3.5" />,
           label: 'Fakta/Opini'
         };
       case 'VISUAL_CASE':
         return {
-          bg: 'bg-pink-950/70 border-pink-600/50 text-pink-200',
+          bg: 'bg-gradient-to-br from-pink-950/80 to-slate-950 border-pink-600/60 shadow-sm',
           badge: 'bg-pink-500 text-white',
+          accentBar: 'bg-pink-400',
           icon: <ImageIcon className="w-3.5 h-3.5" />,
-          label: 'Kasus'
+          label: 'Studi Kasus'
         };
       case 'CHANCE':
         return {
-          bg: 'bg-amber-950/70 border-amber-500/60 text-amber-200',
+          bg: 'bg-gradient-to-br from-amber-950/80 to-slate-950 border-amber-500/60 shadow-sm',
           badge: 'bg-amber-400 text-slate-950',
+          accentBar: 'bg-amber-400',
           icon: <HelpCircle className="w-3.5 h-3.5" />,
           label: 'Peluang'
         };
       case 'DUEL':
         return {
-          bg: 'bg-rose-950/70 border-rose-600/60 text-rose-200',
+          bg: 'bg-gradient-to-br from-rose-950/80 to-slate-950 border-rose-600/60 shadow-sm',
           badge: 'bg-rose-500 text-white',
+          accentBar: 'bg-rose-400',
           icon: <Zap className="w-3.5 h-3.5" />,
-          label: 'Duel'
+          label: 'Duel Cepat'
         };
       default:
         return {
-          bg: 'bg-slate-900/70 border-slate-700/60 text-slate-200',
+          bg: 'bg-slate-900 border-slate-700',
           badge: 'bg-slate-700 text-white',
+          accentBar: 'bg-slate-500',
           icon: null,
           label: 'Petak'
         };
     }
   };
 
+  // Direction indicator for winding path
+  const getDirectionArrow = (tileNum: number) => {
+    // Turn points
+    if (tileNum === 6) return '↑ Naik ke #7';
+    if (tileNum === 12) return '↑ Naik ke #13';
+    if (tileNum === 18) return '↑ Naik ke #19';
+    if (tileNum === 24) return '↑ Naik ke #25';
+    if (tileNum === 30) return '🏆 JUARA';
+    // Row 4: 1-5 ->
+    if (tileNum >= 1 && tileNum <= 5) return '→';
+    // Row 3: 7-11 <-
+    if (tileNum >= 7 && tileNum <= 11) return '←';
+    // Row 2: 13-17 ->
+    if (tileNum >= 13 && tileNum <= 17) return '→';
+    // Row 1: 19-23 <-
+    if (tileNum >= 19 && tileNum <= 23) return '←';
+    // Row 0: 25-29 ->
+    if (tileNum >= 25 && tileNum <= 29) return '→';
+    return '';
+  };
+
   return (
-    <div className="w-full bg-slate-950 border-2 border-slate-800 rounded-3xl p-4 sm:p-6 shadow-2xl relative overflow-hidden">
-      {/* Board Theme Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800/80 relative z-20">
-        <div className="flex items-center gap-2.5">
-          <div className="w-3 h-3 rounded-full bg-emerald-400 animate-ping" />
+    <div className="w-full bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-4 border-amber-900/60 rounded-3xl p-3 sm:p-6 shadow-2xl relative overflow-hidden ring-1 ring-amber-500/20">
+      {/* Decorative Wood-Trim Board Edge & Brass Corner Studs */}
+      <div className="absolute top-2 left-2 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 shadow border border-amber-200 pointer-events-none" />
+      <div className="absolute top-2 right-2 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 shadow border border-amber-200 pointer-events-none" />
+      <div className="absolute bottom-2 left-2 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 shadow border border-amber-200 pointer-events-none" />
+      <div className="absolute bottom-2 right-2 w-3.5 h-3.5 rounded-full bg-gradient-to-br from-amber-300 via-amber-500 to-amber-700 shadow border border-amber-200 pointer-events-none" />
+
+      {/* Deluxe Board Header Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-amber-500/20 relative z-20">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-orange-500 to-rose-500 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/30">
+            <Compass className="w-5 h-5" />
+          </div>
           <div>
-            <h2 className="font-display font-extrabold text-base sm:text-lg text-white flex items-center gap-2">
-              <span>Papan Ular Tangga Literasi (1 - 30)</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-700 font-normal">
-                Tangga Naik 🪜 · Ular Meluncur 🐍
+            <h2 className="font-display font-black text-base sm:text-xl text-white tracking-tight flex items-center gap-2">
+              <span>Arena Ular Tangga Bahasa Indonesia</span>
+              <span className="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 shadow-sm">
+                EDISI DELUXE SMP KELAS 8
               </span>
             </h2>
-            <p className="text-[11px] text-slate-400">
-              Bergerak meliuk ke atas dari Petak 1 (Bawah) menuju Puncak Finis Petak 30 (Atas)
-            </p>
+            <div className="flex items-center gap-3 text-xs text-slate-400 mt-0.5">
+              <span className="text-emerald-400 font-semibold flex items-center gap-1">
+                <span>🪜 4 Tangga Prestasi</span>
+              </span>
+              <span>·</span>
+              <span className="text-rose-400 font-semibold flex items-center gap-1">
+                <span>🐍 4 Ular Peluncur</span>
+              </span>
+              <span>·</span>
+              <span className="text-amber-300 font-semibold">
+                🏁 Menuju Puncak Petak 30
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Overlay Toggle & Quick Legend */}
+        {/* Visual Overlay Toggle Switch */}
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => setShowOverlays(!showOverlays)}
-            className={`px-3 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-colors ${
+            className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm ${
               showOverlays
-                ? 'bg-amber-500/20 border-amber-500/50 text-amber-300'
-                : 'bg-slate-900 border-slate-700 text-slate-400'
+                ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-amber-500/20 hover:bg-amber-400'
+                : 'bg-slate-900 border-slate-700 text-slate-400 hover:text-white'
             }`}
           >
-            {showOverlays ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-            <span className="hidden sm:inline">Ular & Tangga Visual</span>
+            {showOverlays ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+            <span>{showOverlays ? 'Visual Ular & Tangga (Aktif)' : 'Sembunyikan Visual'}</span>
           </button>
         </div>
       </div>
 
-      {/* Relative Container for the Board Grid and SVG overlay */}
-      <div className="relative w-full">
-        {/* SVG Graphic Overlay: Ladders and Snakes */}
+      {/* Main Board Arena (Grid + SVG Overlay) */}
+      <div className="relative w-full rounded-2xl overflow-hidden border border-slate-800 bg-slate-950/90 shadow-2xl p-2 sm:p-3">
+        {/* SVG Graphic Overlay: Realistic 3D Ladders and Curving Snakes */}
         {showOverlays && (
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none z-15"
@@ -218,44 +280,66 @@ export const GameBoard: React.FC<GameBoardProps> = ({
             preserveAspectRatio="none"
           >
             <defs>
-              {/* Ladder Rail Gradient */}
-              <linearGradient id="ladderGrad" x1="0" y1="1" x2="0" y2="0">
-                <stop offset="0%" stopColor="#10b981" />
-                <stop offset="50%" stopColor="#34d399" />
-                <stop offset="100%" stopColor="#eab308" />
+              {/* Wood Ladder Shading */}
+              <linearGradient id="ladderWood" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#b45309" />
+                <stop offset="35%" stopColor="#d97706" />
+                <stop offset="70%" stopColor="#f59e0b" />
+                <stop offset="100%" stopColor="#92400e" />
               </linearGradient>
 
-              {/* Snake Gradient Red */}
-              <linearGradient id="snakeRedGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#ef4444" />
+              {/* Gold Rung Gradient */}
+              <linearGradient id="rungGold" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stopColor="#b45309" />
+                <stop offset="50%" stopColor="#fef08a" />
+                <stop offset="100%" stopColor="#ca8a04" />
+              </linearGradient>
+
+              {/* Snake 1 Gradient (Ruby Red) */}
+              <linearGradient id="snakeRuby" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#dc2626" />
+                <stop offset="50%" stopColor="#ef4444" />
+                <stop offset="100%" stopColor="#991b1b" />
+              </linearGradient>
+
+              {/* Snake 2 Gradient (Emerald Viper) */}
+              <linearGradient id="snakeEmerald" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#059669" />
+                <stop offset="50%" stopColor="#10b981" />
+                <stop offset="100%" stopColor="#065f46" />
+              </linearGradient>
+
+              {/* Snake 3 Gradient (Amethyst Purple) */}
+              <linearGradient id="snakePurple" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#7c3aed" />
+                <stop offset="50%" stopColor="#a855f7" />
+                <stop offset="100%" stopColor="#581c87" />
+              </linearGradient>
+
+              {/* Snake 4 Gradient (Coral Orange) */}
+              <linearGradient id="snakeCoral" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#ea580c" />
                 <stop offset="50%" stopColor="#f97316" />
-                <stop offset="100%" stopColor="#b91c1c" />
-              </linearGradient>
-
-              {/* Snake Gradient Magenta */}
-              <linearGradient id="snakePinkGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#f43f5e" />
-                <stop offset="50%" stopColor="#ec4899" />
-                <stop offset="100%" stopColor="#9d174d" />
+                <stop offset="100%" stopColor="#c2410c" />
               </linearGradient>
 
               {/* Drop Shadow filter */}
-              <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="2" dy="4" stdDeviation="3" floodColor="#000" floodOpacity="0.6" />
+              <filter id="boardShadow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="3" dy="5" stdDeviation="4" floodColor="#000" floodOpacity="0.75" />
               </filter>
             </defs>
 
-            {/* --- 1. RENDER LADDERS (Tangga) --- */}
+            {/* --- 1. RENDER LADDERS (Tangga Kayu & Emas) --- */}
             {LADDERS.map((ladder) => {
-              const start = getCenter(ladder.from); // Foot (bottom)
-              const end = getCenter(ladder.to);     // Top (higher)
+              const start = getCenter(ladder.from); // Foot (bawah)
+              const end = getCenter(ladder.to);     // Top (atas)
 
               const dx = end.x - start.x;
               const dy = end.y - start.y;
               const len = Math.hypot(dx, dy) || 1;
-              const nx = -dy / len; // Perpendicular normal
+              const nx = -dy / len;
               const ny = dx / len;
-              const halfWidth = 8;  // Ladder width = 16px
+              const halfWidth = 9; // Width 18px
 
               // Left & Right Rails
               const x1L = start.x + nx * halfWidth;
@@ -268,8 +352,8 @@ export const GameBoard: React.FC<GameBoardProps> = ({
               const x2R = end.x - nx * halfWidth;
               const y2R = end.y - ny * halfWidth;
 
-              // Rungs (Anak tangga)
-              const rungCount = Math.max(4, Math.floor(len / 28));
+              // Rungs
+              const rungCount = Math.max(4, Math.floor(len / 26));
               const rungs = [];
               for (let i = 1; i < rungCount; i++) {
                 const t = i / rungCount;
@@ -278,29 +362,64 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                 const rxR = x1R + (x2R - x1R) * t;
                 const ryR = y1R + (y2R - y1R) * t;
                 rungs.push(
-                  <line
-                    key={`rung-${ladder.id}-${i}`}
-                    x1={rxL}
-                    y1={ryL}
-                    x2={rxR}
-                    y2={ryR}
-                    stroke="#fef08a"
-                    strokeWidth="3.5"
-                    strokeLinecap="round"
-                  />
+                  <g key={`rung-${ladder.id}-${i}`}>
+                    {/* Shadow underneath rung */}
+                    <line
+                      x1={rxL}
+                      y1={ryL + 2}
+                      x2={rxR}
+                      y2={ryR + 2}
+                      stroke="#000000"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      opacity="0.4"
+                    />
+                    {/* Main Rung */}
+                    <line
+                      x1={rxL}
+                      y1={ryL}
+                      x2={rxR}
+                      y2={ryR}
+                      stroke="url(#rungGold)"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                    />
+                  </g>
                 );
               }
 
               return (
-                <g key={ladder.id} filter="url(#shadow)" opacity="0.92">
+                <g key={ladder.id} filter="url(#boardShadow)" opacity="0.95">
+                  {/* Ladder Cast Shadow */}
+                  <line
+                    x1={x1L + 3}
+                    y1={y1L + 4}
+                    x2={x2L + 3}
+                    y2={y2L + 4}
+                    stroke="#000000"
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                    opacity="0.3"
+                  />
+                  <line
+                    x1={x1R + 3}
+                    y1={y1R + 4}
+                    x2={x2R + 3}
+                    y2={y2R + 4}
+                    stroke="#000000"
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                    opacity="0.3"
+                  />
+
                   {/* Left Rail */}
                   <line
                     x1={x1L}
                     y1={y1L}
                     x2={x2L}
                     y2={y2L}
-                    stroke="url(#ladderGrad)"
-                    strokeWidth="4"
+                    stroke="url(#ladderWood)"
+                    strokeWidth="5"
                     strokeLinecap="round"
                   />
                   {/* Right Rail */}
@@ -309,85 +428,115 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                     y1={y1R}
                     x2={x2R}
                     y2={y2R}
-                    stroke="url(#ladderGrad)"
-                    strokeWidth="4"
+                    stroke="url(#ladderWood)"
+                    strokeWidth="5"
                     strokeLinecap="round"
                   />
+                  {/* Top & Bottom Metal Caps */}
+                  <circle cx={x1L} cy={y1L} r="3.5" fill="#fef08a" stroke="#ca8a04" strokeWidth="1" />
+                  <circle cx={x1R} cy={y1R} r="3.5" fill="#fef08a" stroke="#ca8a04" strokeWidth="1" />
+                  <circle cx={x2L} cy={y2L} r="3.5" fill="#fef08a" stroke="#ca8a04" strokeWidth="1" />
+                  <circle cx={x2R} cy={y2R} r="3.5" fill="#fef08a" stroke="#ca8a04" strokeWidth="1" />
+
                   {/* Rungs */}
                   {rungs}
                 </g>
               );
             })}
 
-            {/* --- 2. RENDER SNAKES (Ular) --- */}
+            {/* --- 2. RENDER SNAKES (Ular Meliuk 3D) --- */}
             {SNAKES.map((snake, sIdx) => {
-              const head = getCenter(snake.from); // Head at higher tile
-              const tail = getCenter(snake.to);   // Tail at lower tile
+              const head = getCenter(snake.from); // Head at higher square
+              const tail = getCenter(snake.to);   // Tail at lower square
 
-              // Calculate undulating curve points
-              const mx = (head.x + tail.x) / 2;
+              const offset = sIdx % 2 === 0 ? 42 : -42;
               const my = (head.y + tail.y) / 2;
-              const offset = sIdx % 2 === 0 ? 35 : -35;
-              const ctrl1X = head.x + (sIdx % 2 === 0 ? offset : -offset);
+              const ctrl1X = head.x + offset;
               const ctrl1Y = (head.y + my) / 2;
-              const ctrl2X = tail.x + (sIdx % 2 === 0 ? -offset : offset);
+              const ctrl2X = tail.x - offset;
               const ctrl2Y = (tail.y + my) / 2;
 
               const pathData = `M ${head.x} ${head.y} C ${ctrl1X} ${ctrl1Y}, ${ctrl2X} ${ctrl2Y}, ${tail.x} ${tail.y}`;
-              const gradId = sIdx % 2 === 0 ? 'url(#snakeRedGrad)' : 'url(#snakePinkGrad)';
+
+              const snakeGradients = [
+                'url(#snakeRuby)',
+                'url(#snakeEmerald)',
+                'url(#snakePurple)',
+                'url(#snakeCoral)',
+              ];
+              const gradId = snakeGradients[sIdx % snakeGradients.length];
 
               return (
-                <g key={snake.id} filter="url(#shadow)" opacity="0.94">
-                  {/* Snake Body Outline / Glow */}
+                <g key={snake.id} filter="url(#boardShadow)" opacity="0.96">
+                  {/* Snake Shadow */}
                   <path
                     d={pathData}
                     fill="none"
-                    stroke="#1e293b"
-                    strokeWidth="14"
+                    stroke="#000000"
+                    strokeWidth="16"
+                    strokeLinecap="round"
+                    opacity="0.4"
+                    transform="translate(3, 5)"
+                  />
+
+                  {/* Outer Rim Dark Border */}
+                  <path
+                    d={pathData}
+                    fill="none"
+                    stroke="#0f172a"
+                    strokeWidth="15"
                     strokeLinecap="round"
                   />
-                  {/* Snake Body Core */}
+
+                  {/* Vibrant Snake Skin Body */}
                   <path
                     d={pathData}
                     fill="none"
                     stroke={gradId}
-                    strokeWidth="10"
+                    strokeWidth="11"
                     strokeLinecap="round"
                   />
-                  {/* Snake Belly Scales / Striped Dots */}
+
+                  {/* Golden Belly Scales Pattern */}
                   <path
                     d={pathData}
                     fill="none"
                     stroke="#fef08a"
                     strokeWidth="3.5"
-                    strokeDasharray="4 8"
+                    strokeDasharray="4 9"
                     strokeLinecap="round"
-                    opacity="0.85"
+                    opacity="0.9"
                   />
 
-                  {/* Snake Tail (Pointy end) */}
-                  <circle cx={tail.x} cy={tail.y} r="4" fill="#ef4444" />
+                  {/* Curled Pointy Snake Tail */}
+                  <circle cx={tail.x} cy={tail.y} r="5" fill="#fef08a" stroke="#ca8a04" strokeWidth="1.5" />
 
-                  {/* Snake Head (At higher square) */}
+                  {/* Character Snake Head (At higher square) */}
                   <g transform={`translate(${head.x}, ${head.y})`}>
-                    {/* Forked Tongue */}
+                    {/* Forked Flicking Red Tongue */}
                     <path
-                      d="M 0 -12 L 0 -18 L -3 -22 M 0 -18 L 3 -22"
+                      d="M 0 -10 L 0 -17 L -4 -22 M 0 -17 L 4 -22"
                       fill="none"
-                      stroke="#dc2626"
-                      strokeWidth="2"
+                      stroke="#ef4444"
+                      strokeWidth="2.5"
                       strokeLinecap="round"
                     />
-                    {/* Head Oval */}
-                    <ellipse cx="0" cy="-3" rx="10" ry="12" fill={gradId} stroke="#7f1d1d" strokeWidth="1.5" />
-                    {/* Eyes */}
-                    <circle cx="-4" cy="-5" r="2.5" fill="#ffffff" />
-                    <circle cx="-4" cy="-5" r="1.2" fill="#000000" />
-                    <circle cx="4" cy="-5" r="2.5" fill="#ffffff" />
-                    <circle cx="4" cy="-5" r="1.2" fill="#000000" />
+
+                    {/* Head Ellipse */}
+                    <ellipse cx="0" cy="-2" rx="12" ry="14" fill={gradId} stroke="#0f172a" strokeWidth="2" />
+
+                    {/* Big Cute Expressive Eyes */}
+                    <circle cx="-5" cy="-4" r="3.5" fill="#ffffff" stroke="#0f172a" strokeWidth="1" />
+                    <circle cx="-5" cy="-4.5" r="1.8" fill="#000000" />
+                    <circle cx="-6" cy="-5.5" r="0.8" fill="#ffffff" /> {/* Eye light shine */}
+
+                    <circle cx="5" cy="-4" r="3.5" fill="#ffffff" stroke="#0f172a" strokeWidth="1" />
+                    <circle cx="5" cy="-4.5" r="1.8" fill="#000000" />
+                    <circle cx="4" cy="-5.5" r="0.8" fill="#ffffff" /> {/* Eye light shine */}
+
                     {/* Nostrils */}
-                    <circle cx="-1.5" cy="-10" r="0.7" fill="#450a0a" />
-                    <circle cx="1.5" cy="-10" r="0.7" fill="#450a0a" />
+                    <circle cx="-2" cy="-9" r="0.8" fill="#450a0a" />
+                    <circle cx="2" cy="-9" r="0.8" fill="#450a0a" />
                   </g>
                 </g>
               );
@@ -395,7 +544,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
           </svg>
         )}
 
-        {/* 6x5 Grid of Tiles (Winding from Bottom to Top) */}
+        {/* 6x5 Grid of Deluxe Tiles (1 to 30) */}
         <div className="space-y-2 sm:space-y-2.5 relative z-10">
           {rows.map((rowTileNums, rIdx) => {
             return (
@@ -405,91 +554,103 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                   const theme = getTileTheme(tile);
                   const playersOnTile = players.filter(p => p.position === tileIndex);
 
-                  // Is this tile a snake head or tail?
+                  // Snake / Ladder relationships
                   const snakeHere = SNAKES.find(s => s.from === tileIndex);
                   const snakeTailHere = SNAKES.find(s => s.to === tileIndex);
-                  // Is this tile a ladder foot or top?
                   const ladderHere = LADDERS.find(l => l.from === tileIndex);
                   const ladderTopHere = LADDERS.find(l => l.to === tileIndex);
+
+                  const dirArrow = getDirectionArrow(tileIndex);
 
                   return (
                     <div
                       key={tileIndex}
                       onClick={() => onTileClick?.(tile)}
-                      className={`relative min-h-[96px] sm:min-h-[110px] rounded-xl border p-2 flex flex-col justify-between transition-all cursor-pointer group hover:scale-[1.03] hover:z-25 ${theme.bg} ${
-                        tile.type === 'START' ? 'shadow-lg shadow-teal-500/20' : ''
-                      } ${tile.type === 'FINISH' ? 'shadow-xl shadow-amber-500/25 ring-2 ring-amber-400' : ''}`}
-                      title={`Petak #${tile.index}: ${tile.title} (${tile.description})`}
+                      className={`relative min-h-[105px] sm:min-h-[120px] rounded-2xl border-2 p-2 sm:p-2.5 flex flex-col justify-between transition-all cursor-pointer group hover:scale-[1.03] hover:z-25 overflow-hidden ${theme.bg} ${
+                        tile.type === 'START' ? 'ring-2 ring-teal-400/60' : ''
+                      } ${tile.type === 'FINISH' ? 'ring-2 ring-amber-400' : ''}`}
+                      title={`Petak #${tile.index}: ${tile.title} - ${tile.description}`}
                     >
-                      {/* Top Header: Tile Number & Badge */}
-                      <div className="flex items-center justify-between gap-1">
-                        <span className="font-mono text-xs sm:text-sm font-extrabold text-white bg-slate-950/60 px-1.5 py-0.5 rounded border border-slate-800">
-                          {tile.index}
-                        </span>
+                      {/* Top Glowing Color Accent Bar */}
+                      <div className={`absolute top-0 left-0 right-0 h-1 ${theme.accentBar} opacity-90`} />
 
-                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 ${theme.badge}`}>
+                      {/* Header Row: Circular Coin Number & Badge & Direction Flow */}
+                      <div className="flex items-center justify-between gap-1 relative z-10">
+                        {/* Deluxe Coin Number Badge */}
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-700 shadow-inner flex items-center justify-center">
+                          <span className="font-display font-black text-xs sm:text-sm text-amber-300 drop-shadow">
+                            {tile.index}
+                          </span>
+                        </div>
+
+                        {/* Direction Arrow */}
+                        {dirArrow && (
+                          <span className="text-[10px] font-mono font-extrabold text-slate-400/70 group-hover:text-amber-400 transition-colors">
+                            {dirArrow}
+                          </span>
+                        )}
+
+                        {/* Category Badge */}
+                        <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md flex items-center gap-1 shadow-sm ${theme.badge}`}>
                           {theme.icon}
-                          <span className="hidden md:inline">{theme.label}</span>
+                          <span className="hidden lg:inline">{theme.label}</span>
                         </span>
                       </div>
 
-                      {/* Tile Title & Ular/Tangga Action Indicators */}
-                      <div className="my-1">
-                        <p className="text-[10px] sm:text-xs font-bold leading-tight line-clamp-2 text-white">
+                      {/* Middle: Title & Action Banners */}
+                      <div className="my-1 relative z-10">
+                        <p className="text-[11px] sm:text-xs font-bold leading-snug line-clamp-2 text-white drop-shadow-sm">
                           {tile.title}
                         </p>
 
-                        {/* Tangga naik indicator */}
+                        {/* Tangga Naik Indicator Badge */}
                         {ladderHere && (
-                          <div className="text-[9px] font-bold text-emerald-400 flex items-center gap-0.5 mt-0.5 bg-emerald-950/80 px-1 rounded border border-emerald-800/60">
-                            <ArrowUpRight className="w-2.5 h-2.5" />
-                            <span>Naik ke #{ladderHere.to}</span>
+                          <div className="text-[9px] font-extrabold text-emerald-300 flex items-center gap-1 mt-1 bg-emerald-950/90 px-1.5 py-0.5 rounded-md border border-emerald-500/70 shadow-sm animate-pulse">
+                            <ArrowUpRight className="w-3 h-3 text-emerald-400" />
+                            <span>Naik #{ladderHere.to}</span>
                           </div>
                         )}
 
-                        {/* Puncak tangga indicator */}
+                        {/* Puncak Tangga */}
                         {ladderTopHere && (
-                          <div className="text-[8px] font-semibold text-emerald-300 flex items-center gap-0.5 mt-0.5 opacity-80">
+                          <div className="text-[8px] font-bold text-emerald-400 flex items-center gap-0.5 mt-0.5 opacity-90">
                             <span>🪜 Puncak Tangga</span>
                           </div>
                         )}
 
-                        {/* Kepala Ular indicator */}
+                        {/* Kepala Ular Indicator Badge */}
                         {snakeHere && (
-                          <div className="text-[9px] font-bold text-red-400 flex items-center gap-0.5 mt-0.5 bg-red-950/80 px-1 rounded border border-red-800/60 animate-pulse">
-                            <ArrowDownRight className="w-2.5 h-2.5" />
+                          <div className="text-[9px] font-extrabold text-red-300 flex items-center gap-1 mt-1 bg-red-950/90 px-1.5 py-0.5 rounded-md border border-red-500/70 shadow-sm animate-pulse">
+                            <ArrowDownRight className="w-3 h-3 text-red-400" />
                             <span>Ular! Meluncur #{snakeHere.to}</span>
                           </div>
                         )}
 
-                        {/* Ekor Ular indicator */}
+                        {/* Ekor Ular */}
                         {snakeTailHere && (
-                          <div className="text-[8px] font-semibold text-red-300 flex items-center gap-0.5 mt-0.5 opacity-80">
+                          <div className="text-[8px] font-bold text-red-400 flex items-center gap-0.5 mt-0.5 opacity-90">
                             <span>🐾 Ekor Ular</span>
                           </div>
                         )}
                       </div>
 
-                      {/* Player Tokens Sitting on this Tile */}
-                      <div className="min-h-[22px] flex items-center gap-1 flex-wrap pt-1 border-t border-slate-800/60">
+                      {/* Bottom: 3D Pawns Sitting on this Tile */}
+                      <div className="min-h-[32px] sm:min-h-[38px] flex items-end justify-center gap-1.5 flex-wrap pt-1 border-t border-slate-800/80 relative z-20">
                         {playersOnTile.length === 0 ? (
                           <div className="h-4" />
                         ) : (
                           playersOnTile.map((player) => {
                             const isActive = players[activePlayerIndex]?.id === player.id;
+                            const isLeader = player.id === leaderId;
                             return (
-                              <div
+                              <PlayerPawn
                                 key={player.id}
-                                className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-black text-white shadow-md transition-all ${
-                                  isActive
-                                    ? 'ring-2 ring-white scale-125 shadow-lg animate-bounce z-30'
-                                    : 'opacity-90'
-                                }`}
-                                style={{ backgroundColor: player.avatar.color }}
-                                title={`${player.name} (${player.avatar.name})`}
-                              >
-                                {player.name.charAt(0).toUpperCase()}
-                              </div>
+                                player={player}
+                                isActive={isActive}
+                                isLeader={isLeader}
+                                size={playersOnTile.length > 2 ? 'sm' : 'md'}
+                                showName={isActive}
+                              />
                             );
                           })
                         )}

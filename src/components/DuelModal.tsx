@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Player, Question } from '../types/game';
+import { PlayerPawn } from './PlayerPawn';
 import { playSound } from '../utils/audio';
 import { Zap, Swords, Trophy, Clock, CheckCircle2, XCircle } from 'lucide-react';
 
@@ -98,29 +99,23 @@ export const DuelModal: React.FC<DuelModalProps> = ({
         {step === 'MATCH' && (
           <div className="py-6 space-y-6 text-center">
             <div className="flex items-center justify-center gap-6">
-              {/* Challenger */}
+              {/* Challenger Figurine */}
               <div className="flex flex-col items-center gap-2">
-                <div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center font-black text-2xl text-white shadow-lg ring-4 ring-rose-500/40"
-                  style={{ backgroundColor: challenger.avatar.color }}
-                >
-                  {challenger.name.charAt(0).toUpperCase()}
+                <div className="p-2 rounded-2xl bg-slate-950/80 border border-rose-500/50 shadow-lg">
+                  <PlayerPawn player={challenger} isActive={true} size="lg" />
                 </div>
                 <div className="font-bold text-white text-sm">{challenger.name}</div>
-                <span className="text-[11px] text-slate-400">Penantang</span>
+                <span className="text-[11px] text-rose-300 font-semibold">Penantang</span>
               </div>
 
               <div className="font-display font-black text-2xl text-rose-500 italic">
                 VS
               </div>
 
-              {/* Opponent Selection */}
+              {/* Opponent Selection Figurine */}
               <div className="flex flex-col items-center gap-2">
-                <div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center font-black text-2xl text-white shadow-lg ring-4 ring-slate-700"
-                  style={{ backgroundColor: opponent.avatar.color }}
-                >
-                  {opponent.name.charAt(0).toUpperCase()}
+                <div className="p-2 rounded-2xl bg-slate-950/80 border border-slate-700 shadow-lg">
+                  <PlayerPawn player={opponent} isActive={false} size="lg" />
                 </div>
                 <select
                   value={opponentId}
@@ -131,7 +126,7 @@ export const DuelModal: React.FC<DuelModalProps> = ({
                     <option key={p.id} value={p.id}>{p.name}</option>
                   ))}
                 </select>
-                <span className="text-[11px] text-slate-400">Lawan Tanding</span>
+                <span className="text-[11px] text-amber-300 font-semibold">Lawan Tanding</span>
               </div>
             </div>
 

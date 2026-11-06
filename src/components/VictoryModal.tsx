@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { Player } from '../types/game';
+import { PlayerPawn } from './PlayerPawn';
 import { playSound } from '../utils/audio';
 import { Trophy, Medal, Printer, RotateCcw, Award, CheckCircle, BarChart3 } from 'lucide-react';
 
@@ -80,11 +81,8 @@ export const VictoryModal: React.FC<VictoryModalProps> = ({
           {/* Rank 2 */}
           {top2 && (
             <div className="flex flex-col items-center flex-1 max-w-[140px]">
-              <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-white shadow-md mb-2 text-sm"
-                style={{ backgroundColor: top2.avatar.color }}
-              >
-                {top2.name.charAt(0).toUpperCase()}
+              <div className="mb-2">
+                <PlayerPawn player={top2} isActive={false} size="md" />
               </div>
               <span className="text-xs font-bold text-white truncate max-w-full">{top2.name}</span>
               <span className="text-[11px] text-slate-400 font-mono">{top2.score} Poin</span>
@@ -101,11 +99,8 @@ export const VictoryModal: React.FC<VictoryModalProps> = ({
               <div className="text-amber-400 animate-bounce mb-1">
                 <Trophy className="w-6 h-6" />
               </div>
-              <div
-                className="w-16 h-16 rounded-2xl flex items-center justify-center font-black text-xl text-white shadow-xl ring-4 ring-amber-400/40 mb-2"
-                style={{ backgroundColor: top1.avatar.color }}
-              >
-                {top1.name.charAt(0).toUpperCase()}
+              <div className="mb-2">
+                <PlayerPawn player={top1} isActive={true} isLeader={true} size="lg" />
               </div>
               <span className="text-sm font-extrabold text-amber-300 truncate max-w-full">{top1.name}</span>
               <span className="text-xs text-amber-400 font-mono font-bold">{top1.score} Poin</span>
@@ -119,11 +114,8 @@ export const VictoryModal: React.FC<VictoryModalProps> = ({
           {/* Rank 3 */}
           {top3 && (
             <div className="flex flex-col items-center flex-1 max-w-[140px]">
-              <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center font-bold text-white shadow-md mb-2 text-sm"
-                style={{ backgroundColor: top3.avatar.color }}
-              >
-                {top3.name.charAt(0).toUpperCase()}
+              <div className="mb-2">
+                <PlayerPawn player={top3} isActive={false} size="md" />
               </div>
               <span className="text-xs font-bold text-white truncate max-w-full">{top3.name}</span>
               <span className="text-[11px] text-slate-400 font-mono">{top3.score} Poin</span>

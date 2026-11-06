@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { ChanceCard, Player } from '../types/game';
+import { PlayerPawn } from './PlayerPawn';
 import { playSound } from '../utils/audio';
 import { Sparkles, ArrowRight, ShieldCheck, Trophy, RotateCcw, Flame } from 'lucide-react';
 
@@ -73,9 +74,10 @@ export const ChanceCardModal: React.FC<ChanceCardModalProps> = ({
             <h3 className="font-display font-extrabold text-xl text-white">
               {card.title}
             </h3>
-            <p className="text-xs text-slate-400 mt-1">
-              Pemain: <strong className="text-slate-200">{player.name}</strong>
-            </p>
+            <div className="flex items-center justify-center gap-2 mt-2">
+              <PlayerPawn player={player} isActive={true} size="sm" />
+              <span className="text-xs text-slate-300 font-semibold">{player.name}</span>
+            </div>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-sm text-slate-300 leading-relaxed">

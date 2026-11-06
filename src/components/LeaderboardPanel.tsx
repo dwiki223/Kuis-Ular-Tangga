@@ -1,5 +1,6 @@
 import React from 'react';
 import { Player } from '../types/game';
+import { PlayerPawn } from './PlayerPawn';
 import { Trophy, Flame, Shield, Bot, Award, Medal } from 'lucide-react';
 
 interface LeaderboardPanelProps {
@@ -78,11 +79,13 @@ export const LeaderboardPanel: React.FC<LeaderboardPanelProps> = ({
               <div className="flex items-center gap-2.5 min-w-0">
                 {getRankBadge(rank)}
 
-                <div
-                  className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs text-white shadow-sm shrink-0"
-                  style={{ backgroundColor: player.avatar.color }}
-                >
-                  {player.name.charAt(0).toUpperCase()}
+                <div className="shrink-0 flex items-center justify-center">
+                  <PlayerPawn
+                    player={player}
+                    isActive={isActive}
+                    isLeader={rank === 1}
+                    size="sm"
+                  />
                 </div>
 
                 <div className="min-w-0">
